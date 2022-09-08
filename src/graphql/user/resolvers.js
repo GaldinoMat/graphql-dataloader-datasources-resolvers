@@ -4,8 +4,9 @@ const user = async (_, { id }, { getUsers }) => {
   return user.json();
 };
 
-const users = async (_, __, { getUsers }) => {
-  const users = await getUsers();
+const users = async (_, { inputFilters }, { getUsers }) => {
+  const apiSearchFiltersInput = new URLSearchParams(inputFilters);
+  const users = await getUsers(`/?${apiSearchFiltersInput}`);
 
   return users.json();
 };
