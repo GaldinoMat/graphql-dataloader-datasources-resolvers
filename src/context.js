@@ -1,10 +1,12 @@
 import fetch from 'node-fetch';
-
-const API_URL = 'http://localhost:3000';
+import { getPosts } from './graphql/post/utils';
+import { makeUserDataloader } from './graphql/user/dataloaders';
+import { getUsers } from './graphql/user/utils';
 
 export const context = () => {
   return {
-    getUsers: (path = '') => fetch(`${API_URL}/users/${path}`),
-    getPosts: (path = '') => fetch(`${API_URL}/posts/${path}`),
+    userDataLoader: makeUserDataloader(getUsers(fetch)),
+    getUsers: getUsers(fetch),
+    getPosts: getPosts(fetch),
   };
 };
