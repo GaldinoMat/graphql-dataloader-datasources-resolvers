@@ -13,8 +13,9 @@ const users = async (_, { inputFilters }, { getUsers }) => {
   return users;
 };
 
-const posts = ({ id }, _, { postDataLoader }) => {
-  return postDataLoader.load(id);
+const posts = ({ id }, _, { dataSources }) => {
+  const { postApi } = dataSources;
+  return postApi.batchLoadUserId(id);
 };
 
 export const userResolvers = {
