@@ -1,5 +1,6 @@
 import { RESTDataSource } from 'apollo-datasource-rest';
 import { makePostDataloader } from './dataloaders';
+import { createPostFn } from './utils/postRepository';
 
 export default class PostsApi extends RESTDataSource {
   constructor() {
@@ -18,6 +19,10 @@ export default class PostsApi extends RESTDataSource {
     return this.get(id, undefined, {
       cacheOptions: { ttl: 60 },
     });
+  }
+
+  async createPost(postData) {
+    return await createPostFn(postData, this);
   }
 
   batchLoadById(id) {
