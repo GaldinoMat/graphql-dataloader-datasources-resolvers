@@ -22,7 +22,18 @@ export const updatePostFn = async (postId, postData, dataSource) => {
     if (!title) throw new ValidationError('Post must have a title');
   }
 
-  return dataSource.patch(postId, { ...postData });
+  return await dataSource.patch(postId, { ...postData });
+};
+
+export const deletePostFn = async (postId, dataSource) => {
+  if (!postId) throw new ValidationError('Missing postId');
+
+  try {
+    const deletedPost = await dataSource.delete(postId);
+    return !!deletedPost;
+  } catch (error) {
+    throw new ValidationError('Post does not exist');
+  }
 };
 
 const createPostInfo = async (postData, dataSource) => {

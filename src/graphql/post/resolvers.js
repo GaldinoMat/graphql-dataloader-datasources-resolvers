@@ -20,6 +20,11 @@ const updatePost = async (_, { postId, data }, { dataSources }) => {
   const { postApi } = dataSources;
   return postApi.updatePost(postId, data);
 };
+
+const deletePost = async (_, { postId }, { dataSources }) => {
+  const { postApi } = dataSources;
+  return postApi.deletePost(postId);
+};
 //#endregion
 
 //#region Field resolvers
@@ -37,6 +42,7 @@ export const postResolvers = {
   Mutation: {
     createPost,
     updatePost,
+    deletePost,
   },
   Post: {
     user,
