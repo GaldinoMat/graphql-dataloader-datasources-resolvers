@@ -159,6 +159,15 @@
       "userName": "marcia_carvalho81",
       "indexRef": 1,
       "createdAt": "2016-12-08T00:49:39.870Z"
+    },
+    {
+      "firstName": "Mateus",
+      "lastName": "Galdino",
+      "userName": "mateus.galdino",
+      "passwordHash": "$2b$12$MLtMXyLVF.tDn1GJQ28YlufnhXVGJqqmjFQvjdI5HdWeIVrYZWCTe",
+      "indexRef": 21,
+      "createdAt": "2022-09-17T21:09:06.780Z",
+      "id": "dTOdm_m"
     }
   ],
   "posts": [
@@ -361,6 +370,14 @@
       "indexRef": 25,
       "createdAt": "2022-09-13T18:57:47.331Z",
       "id": "M1SpC5V"
+    },
+    {
+      "title": "Outro title",
+      "body": "O body",
+      "userId": "602",
+      "indexRef": 26,
+      "createdAt": "2022-09-16T16:53:16.328Z",
+      "id": "4okgVKe"
     }
   ],
   "comments": [

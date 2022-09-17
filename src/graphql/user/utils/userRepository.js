@@ -1,4 +1,5 @@
-import { ValidationError } from 'apollo-server';
+import { UserInputError, ValidationError } from 'apollo-server';
+import { bcryptHash } from '../../utils/bcryptUtils';
 
 export const createUserFn = async (userData, dataSource) => {
   await checkUserFields(userData, true);
@@ -49,7 +50,7 @@ export const deleteUserFn = async (userId, dataSource) => {
 };
 
 const checkUserFields = async (userData, isAllFieldsRequired = false) => {
-  const userFields = ['firstName', 'lastName', 'userName'];
+  const userFields = ['firstName', 'lastName', 'userName', 'password'];
 
   for (const field of userFields) {
     if (!isAllFieldsRequired) {
@@ -58,17 +59,36 @@ const checkUserFields = async (userData, isAllFieldsRequired = false) => {
 
     if (field === 'userName') validateUsername(userData[field]);
 
-    if (!userData[field]) {
-      throw new ValidationError(`Missing ${field}`);
-    }
+    if (field === 'password') validateUserPassword(userData[field]);
+
+    if (!userData[field]) throw new ValidationError(`Missing ${field}`);
+  }
+
+  if (userData.password && !userData.passwordHash) {
+    const { password } = userData;
+
+    const passwordHash = await bcryptHash(password, 12);
+    userData.passwordHash = passwordHash;
+    delete userData['password'];
   }
 };
 
-const validateUsername = async (userName) => {
+const validateUsername = (userName) => {
   const userRegex = /^[a-z]([a-z0-9_.-]+)+$/gi;
 
   if (!userName.match(userRegex))
     throw new ValidationError('Username not accepted');
+};
+
+const validateUserPassword = (password) => {
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,30}$/;
+
+  console.log(password.match(passwordRegex));
+
+  if (!password.match(passwordRegex))
+    throw new UserInputError(
+      'Password must contain at least one lowercase letter, one uppercase letter and one number',
+    );
 };
 
 const userExists = async (userName, dataSource) => {
