@@ -26,6 +26,8 @@ export const createUserFn = async (userData, dataSource) => {
 };
 
 export const updateUserFn = async (userId, userData, dataSource) => {
+  await checkUserFields(userData);
+
   if (!userId) throw new ValidationError('Missing userId');
 
   if (userData.userName) {

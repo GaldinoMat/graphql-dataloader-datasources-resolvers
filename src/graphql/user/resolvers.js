@@ -1,3 +1,5 @@
+import { checkOwner } from '../login/utils/authFunctions';
+
 //#region Query resolvers
 const user = async (_, { id }, { dataSources }) => {
   const user = await dataSources.userApi.getUser(id);
@@ -16,12 +18,19 @@ const createUser = async (_, { data }, { dataSources }) => {
   return userApi.createUser(data);
 };
 
-const updateUser = async (_, { userId, data }, { dataSources }) => {
+const updateUser = async (
+  _,
+  { userId, data },
+  { dataSources, loggedUserId },
+) => {
+  checkOwner(userId, loggedUserId);
+
   const { userApi } = dataSources;
   return userApi.updateUser(userId, data);
 };
 
-const deleteUser = async (_, { userId }, { dataSources }) => {
+const deleteUser = async (_, { userId }, { dataSources, loggedUserId }) => {
+  checkOwner(userId, loggedUserId);
   const { userApi } = dataSources;
   return userApi.deleteUser(userId);
 };
@@ -33,6 +42,7 @@ const posts = async ({ id }, _, { dataSources }) => {
   return postApi.batchLoadById(id);
 };
 //#endregion
+
 export const userResolvers = {
   Query: {
     user,

@@ -1,7 +1,7 @@
 import { RESTDataSource } from 'apollo-datasource-rest';
 import { AuthenticationError } from 'apollo-server';
 import { bcryptCompare } from '../utils/bcryptUtils';
-import { createJWToken } from '../utils/jwtUtils';
+import { createJWTToken } from '../utils/jwtUtils';
 
 export default class LoginApi extends RESTDataSource {
   constructor() {
@@ -9,7 +9,15 @@ export default class LoginApi extends RESTDataSource {
     this.baseURL = `${process.env.API_URL}/users/`;
   }
 
-  async login(userName, password) {
+  checkUser(user) {
+    const isUserFound = !!user.length;
+
+    if (!isUserFound) throw new AuthenticationError('Username error');
+
+    return isUserFound;
+  }
+
+  async getUser(userName) {
     const user = await this.get(
       '',
       {
@@ -20,20 +28,51 @@ export default class LoginApi extends RESTDataSource {
       },
     );
 
-    const isUserFound = !!user.length;
+    this.checkUser(user);
 
-    if (!isUserFound) throw new AuthenticationError('Username error');
+    return user;
+  }
+
+  async login(userName, password) {
+    const user = await this.getUser(userName);
 
     const { passwordHash, id: userId } = user.pop();
 
     if (!(await bcryptCompare(password, passwordHash)))
       throw new AuthenticationError('Password error');
 
-    const jwtToken = createJWToken({ userId });
+    const token = createJWTToken({ userId });
+
+    await this.patch(
+      userId,
+      { token },
+      {
+        cacheOptions: { ttl: 0 },
+      },
+    );
 
     return {
       userId,
-      token: jwtToken,
+      token,
     };
+  }
+
+  async logout(userName) {
+    const user = await this.getUser(userName);
+
+    const { id } = user.pop();
+
+    if (id !== this.context.loggedUserId)
+      throw new AuthenticationError('Authentication error');
+
+    await this.patch(
+      id,
+      { token: '' },
+      {
+        cacheOptions: { ttl: 0 },
+      },
+    );
+
+    return true;
   }
 }

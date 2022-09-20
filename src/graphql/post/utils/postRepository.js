@@ -1,4 +1,8 @@
-import { ValidationError } from 'apollo-server';
+import {
+  AuthenticationError,
+  UserInputError,
+  ValidationError,
+} from 'apollo-server';
 
 export const createPostFn = async (postData, dataSource) => {
   const newPost = await createPostInfo(postData, dataSource);
@@ -14,7 +18,9 @@ export const createPostFn = async (postData, dataSource) => {
 export const updatePostFn = async (postId, postData, dataSource) => {
   if (!postId) throw new Error('Missing postId');
 
-  const { title, userId } = postData;
+  const { userId } = await findOwner(dataSource, postId);
+
+  const { title } = postData;
 
   await userExists(userId, dataSource);
 
@@ -22,11 +28,17 @@ export const updatePostFn = async (postId, postData, dataSource) => {
     if (!title) throw new ValidationError('Post must have a title');
   }
 
-  return await dataSource.patch(postId, { ...postData });
+  return await dataSource.patch(
+    postId,
+    { ...postData },
+    { cacheOptions: { ttl: 0 } },
+  );
 };
 
 export const deletePostFn = async (postId, dataSource) => {
   if (!postId) throw new ValidationError('Missing postId');
+
+  await findOwner(dataSource, postId);
 
   try {
     const deletedPost = await dataSource.delete(postId);
@@ -38,6 +50,8 @@ export const deletePostFn = async (postId, dataSource) => {
 
 const createPostInfo = async (postData, dataSource) => {
   const { title, body, userId } = postData;
+
+  console.log(userId);
 
   await userExists(userId, dataSource);
 
@@ -64,4 +78,17 @@ const userExists = async (userId, dataSource) => {
   } catch (error) {
     throw new ValidationError(`User not found`);
   }
+};
+
+const findOwner = async (dataSource, postId) => {
+  const foundPost = await dataSource.get(postId, undefined, {
+    cacheOptions: { ttl: 0 },
+  });
+
+  if (!postId) throw new UserInputError('Could not find specified post');
+
+  if (foundPost.userId !== dataSource.context.loggedUserId)
+    throw new AuthenticationError('You can not modify this post');
+
+  return foundPost;
 };
