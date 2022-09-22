@@ -51,6 +51,15 @@ export default class LoginApi extends RESTDataSource {
       },
     );
 
+    // Response cookie header
+    this.context.res.cookie('jwtToken', token, {
+      secure: true, // Rede segura - Https
+      httpOnly: true, // Não deve ser acessado via código
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+      path: '/',
+      sameSite: 'strict', // strict lax none
+    });
+
     return {
       userId,
       token,
@@ -72,6 +81,8 @@ export default class LoginApi extends RESTDataSource {
         cacheOptions: { ttl: 0 },
       },
     );
+    // Response cookie header
+    this.context.res.clearCookie('jwtToken');
 
     return true;
   }
