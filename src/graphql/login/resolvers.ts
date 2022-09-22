@@ -1,4 +1,4 @@
-const login = async (_, { data }, { dataSources }) => {
+const login = async (_: any, { data }: any, { dataSources }: any) => {
   const { userName, password } = data;
 
   const { loginApi } = dataSources;
@@ -6,7 +6,7 @@ const login = async (_, { data }, { dataSources }) => {
   return loginApi.login(userName, password);
 };
 
-const logout = async (_, { userName }, { dataSources }) => {
+const logout = async (_: any, { userName }: any, { dataSources }: any) => {
   const { loginApi } = dataSources;
 
   return loginApi.logout(userName);

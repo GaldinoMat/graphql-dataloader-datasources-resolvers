@@ -9,7 +9,7 @@ export default class LoginApi extends RESTDataSource {
     this.baseURL = `${process.env.API_URL}/users/`;
   }
 
-  checkUser(user) {
+  checkUser(user: any) {
     const isUserFound = !!user.length;
 
     if (!isUserFound) throw new AuthenticationError('Username error');
@@ -17,7 +17,7 @@ export default class LoginApi extends RESTDataSource {
     return isUserFound;
   }
 
-  async getUser(userName) {
+  async getUser(userName: string) {
     const user = await this.get(
       '',
       {
@@ -33,7 +33,7 @@ export default class LoginApi extends RESTDataSource {
     return user;
   }
 
-  async login(userName, password) {
+  async login(userName: string, password: string) {
     const user = await this.getUser(userName);
 
     const { passwordHash, id: userId } = user.pop();
@@ -66,7 +66,7 @@ export default class LoginApi extends RESTDataSource {
     };
   }
 
-  async logout(userName) {
+  async logout(userName: string) {
     const user = await this.getUser(userName);
 
     const { id } = user.pop();

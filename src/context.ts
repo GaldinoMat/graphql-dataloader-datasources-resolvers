@@ -2,7 +2,7 @@ import { cookieParser } from './graphql/login/utils/cookieParser';
 import UsersApi from './graphql/user/datasources';
 import { verifyJWTToken } from './graphql/utils/jwtUtils';
 
-const authorizeUserBearer = async (req) => {
+const authorizeUserBearer = async (req: any) => {
   const { headers } = req;
   const { authorization } = headers;
 
@@ -15,12 +15,12 @@ const authorizeUserBearer = async (req) => {
   }
 };
 
-const verifyUserJWT = async (token) => {
+const verifyUserJWT = async (token: string) => {
   try {
-    const { userId } = verifyJWTToken(token);
+    const {userId} = verifyJWTToken(token);
 
     const userAPI = new UsersApi();
-    userAPI.initialize({});
+    userAPI.initialize({} as any);
     const { token: foundToken } = await userAPI.getUser(userId);
 
     if (foundToken !== token) return '';
@@ -31,7 +31,7 @@ const verifyUserJWT = async (token) => {
   }
 };
 
-export const context = async ({ req, res }) => {
+export const context = async ({ req, res }: any) => {
   let loggedUserId = await authorizeUserBearer(req);
 
   if (!loggedUserId) {

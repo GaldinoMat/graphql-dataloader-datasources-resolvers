@@ -1,4 +1,4 @@
-export const cookieParser = (cookiesHeader) => {
+export const cookieParser = (cookiesHeader: any) => {
   // The final goal is to return an object with key/value reflecting
   // the cookies. So, this functions always returns an object.
 
@@ -9,7 +9,7 @@ export const cookieParser = (cookiesHeader) => {
 
   // If we have something similar to cookie, we want to add them
   // to the final object
-  const parsedCookie = {};
+  const parsedCookie = {} as any;
   for (let i = 0; i < cookies.length; i++) {
     const [key, value] = cookies[i].split('=');
     parsedCookie[key] = value;

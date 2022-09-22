@@ -161,7 +161,7 @@
       "createdAt": "2016-12-08T00:49:39.870Z"
     },
     {
-      "firstName": "Matheus",
+      "firstName": "Mateus",
       "lastName": "Galdino",
       "userName": "mateus.galdino",
       "passwordHash": "$2b$12$HdJAl4ckbz9jI/Gg653DUeBVlQ90UhQuj6fMINe1joDnHSIMVzlmS",
@@ -379,14 +379,6 @@
       "indexRef": 26,
       "createdAt": "2022-09-16T16:53:16.328Z",
       "id": "4okgVKe"
-    },
-    {
-      "title": "My new logged in post",
-      "body": "I modified this post again",
-      "userId": "rl_bN_H",
-      "indexRef": 28,
-      "createdAt": "2022-09-20T21:00:02.906Z",
-      "id": "vxyiYap"
     }
   ],
   "comments": [

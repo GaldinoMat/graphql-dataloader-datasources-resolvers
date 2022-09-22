@@ -1,7 +1,7 @@
 import { UserInputError, ValidationError } from 'apollo-server';
 import { bcryptHash } from '../../utils/bcryptUtils';
 
-export const createUserFn = async (userData, dataSource) => {
+export const createUserFn = async (userData: any, dataSource: any) => {
   await checkUserFields(userData, true);
 
   const indexRefUser = await dataSource.get('', {
@@ -25,7 +25,7 @@ export const createUserFn = async (userData, dataSource) => {
   });
 };
 
-export const updateUserFn = async (userId, userData, dataSource) => {
+export const updateUserFn = async (userId: string, userData: any, dataSource: any) => {
   await checkUserFields(userData);
 
   if (!userId) throw new ValidationError('Missing userId');
@@ -40,7 +40,7 @@ export const updateUserFn = async (userId, userData, dataSource) => {
   return dataSource.patch(userId, { ...userData });
 };
 
-export const deleteUserFn = async (userId, dataSource) => {
+export const deleteUserFn = async (userId: string, dataSource: any) => {
   if (!userId) throw new ValidationError('Missing userId');
 
   try {
@@ -51,7 +51,7 @@ export const deleteUserFn = async (userId, dataSource) => {
   }
 };
 
-const checkUserFields = async (userData, isAllFieldsRequired = false) => {
+const checkUserFields = async (userData: any, isAllFieldsRequired = false) => {
   const userFields = ['firstName', 'lastName', 'userName', 'password'];
 
   for (const field of userFields) {
@@ -75,17 +75,15 @@ const checkUserFields = async (userData, isAllFieldsRequired = false) => {
   }
 };
 
-const validateUsername = (userName) => {
+const validateUsername = (userName: string) => {
   const userRegex = /^[a-z]([a-z0-9_.-]+)+$/gi;
 
   if (!userName.match(userRegex))
     throw new ValidationError('Username not accepted');
 };
 
-const validateUserPassword = (password) => {
+const validateUserPassword = (password: string) => {
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,30}$/;
-
-  console.log(password.match(passwordRegex));
 
   if (!password.match(passwordRegex))
     throw new UserInputError(
@@ -93,7 +91,7 @@ const validateUserPassword = (password) => {
     );
 };
 
-const userExists = async (userName, dataSource) => {
+const userExists = async (userName: string, dataSource: any) => {
   try {
     const found = await dataSource.get('', {
       userName,

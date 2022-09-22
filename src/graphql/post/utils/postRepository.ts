@@ -4,7 +4,7 @@ import {
   ValidationError,
 } from 'apollo-server';
 
-export const createPostFn = async (postData, dataSource) => {
+export const createPostFn = async (postData: any, dataSource: any) => {
   const newPost = await createPostInfo(postData, dataSource);
 
   const { title, body, userId } = newPost;
@@ -15,7 +15,7 @@ export const createPostFn = async (postData, dataSource) => {
   return await dataSource.post('', { ...newPost });
 };
 
-export const updatePostFn = async (postId, postData, dataSource) => {
+export const updatePostFn = async (postId: string, postData: any, dataSource: any) => {
   if (!postId) throw new Error('Missing postId');
 
   const { userId } = await findOwner(dataSource, postId);
@@ -35,7 +35,7 @@ export const updatePostFn = async (postId, postData, dataSource) => {
   );
 };
 
-export const deletePostFn = async (postId, dataSource) => {
+export const deletePostFn = async (postId: string, dataSource: any) => {
   if (!postId) throw new ValidationError('Missing postId');
 
   await findOwner(dataSource, postId);
@@ -48,10 +48,8 @@ export const deletePostFn = async (postId, dataSource) => {
   }
 };
 
-const createPostInfo = async (postData, dataSource) => {
+const createPostInfo = async (postData: any, dataSource: any) => {
   const { title, body, userId } = postData;
-
-  console.log(userId);
 
   await userExists(userId, dataSource);
 
@@ -72,7 +70,7 @@ const createPostInfo = async (postData, dataSource) => {
   };
 };
 
-const userExists = async (userId, dataSource) => {
+const userExists = async (userId: string, dataSource: any) => {
   try {
     await dataSource.context.dataSources.userApi.get(userId);
   } catch (error) {
@@ -80,7 +78,7 @@ const userExists = async (userId, dataSource) => {
   }
 };
 
-const findOwner = async (dataSource, postId) => {
+const findOwner = async (dataSource: any, postId: string) => {
   const foundPost = await dataSource.get(postId, undefined, {
     cacheOptions: { ttl: 0 },
   });

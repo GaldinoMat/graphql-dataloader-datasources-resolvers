@@ -1,12 +1,12 @@
 import { isLoggedIn } from '../login/utils/authFunctions';
 
 //#region Query resolvers
-const post = async (_, { id }, { dataSources }) => {
+const post = async (_: any, { id }: any, { dataSources }: any) => {
   const post = await dataSources.postApi.getPost(id);
   return post;
 };
 
-const posts = async (_, { inputFilters }, { dataSources, loggedUserId }) => {
+const posts = async (_: any, { inputFilters }: any, { dataSources, loggedUserId }: any) => {
   isLoggedIn(loggedUserId);
 
   const posts = await dataSources.postApi.getPosts(inputFilters);
@@ -15,7 +15,7 @@ const posts = async (_, { inputFilters }, { dataSources, loggedUserId }) => {
 //#endregion
 
 //#region Mutation resolvers
-const createPost = async (_, { data }, { dataSources, loggedUserId }) => {
+const createPost = async (_: any, { data }: any, { dataSources, loggedUserId }: any) => {
   isLoggedIn(loggedUserId);
   data.userId = loggedUserId;
   const { postApi } = dataSources;
@@ -23,9 +23,9 @@ const createPost = async (_, { data }, { dataSources, loggedUserId }) => {
 };
 
 const updatePost = async (
-  _,
-  { postId, data },
-  { dataSources, loggedUserId },
+  _: any,
+  { postId, data }: any,
+  { dataSources, loggedUserId }: any,
 ) => {
   isLoggedIn(loggedUserId);
   data.userId = loggedUserId;
@@ -33,7 +33,7 @@ const updatePost = async (
   return postApi.updatePost(postId, data);
 };
 
-const deletePost = async (_, { postId }, { dataSources, loggedUserId }) => {
+const deletePost = async (_: any, { postId }: any, { dataSources, loggedUserId }: any) => {
   isLoggedIn(loggedUserId);
   const { postApi } = dataSources;
   return postApi.deletePost(postId);
@@ -41,7 +41,7 @@ const deletePost = async (_, { postId }, { dataSources, loggedUserId }) => {
 //#endregion
 
 //#region Field resolvers
-const user = async ({ userId }, _, { dataSources }) => {
+const user = async ({ userId }: any, _: any, { dataSources }: any) => {
   const { userApi } = dataSources;
   return userApi.batchLoadById(userId);
 };
