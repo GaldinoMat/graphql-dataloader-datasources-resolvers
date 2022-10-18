@@ -17,6 +17,10 @@ const server = new ApolloServer({
     };
   },
   uploads: false,
+  cors: {
+    origin: ['http://localhost:4003'],
+    credentials: true,
+  },
 });
 
 server.listen(4003).then(({ url }) => {
