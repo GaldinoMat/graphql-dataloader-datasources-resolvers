@@ -1,7 +1,7 @@
 import { RESTDataSource } from 'apollo-datasource-rest';
 import { AuthenticationError } from 'apollo-server';
-import { bcryptCompare } from '../utils/bcryptUtils';
-import { createJWTToken } from '../utils/jwtUtils';
+import { bcryptCompare } from '../../utils/bcryptUtils';
+import { createJWTToken } from '../../utils/jwtUtils';
 
 export default class LoginApi extends RESTDataSource {
   constructor() {

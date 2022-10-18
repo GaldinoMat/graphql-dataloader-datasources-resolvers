@@ -1,5 +1,5 @@
 import { UserInputError, ValidationError } from 'apollo-server';
-import { bcryptHash } from '../../utils/bcryptUtils';
+import { bcryptHash } from '../../../utils/bcryptUtils';
 
 export const createUserFn = async (userData: any, dataSource: any) => {
   await checkUserFields(userData, true);

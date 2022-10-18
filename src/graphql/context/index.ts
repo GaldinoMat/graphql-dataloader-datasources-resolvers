@@ -1,6 +1,6 @@
-import { cookieParser } from './graphql/login/utils/cookieParser';
-import UsersApi from './graphql/user/datasources';
-import { verifyJWTToken } from './graphql/utils/jwtUtils';
+import { cookieParser } from '../schema/login/utils/cookieParser';
+import UsersApi from '../schema/user/datasources';
+import { verifyJWTToken } from '../utils/jwtUtils';
 
 const authorizeUserBearer = async (req: any) => {
   const { headers } = req;
