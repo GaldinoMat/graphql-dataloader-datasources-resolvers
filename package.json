@@ -4,8 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules -r dotenv/config src/index.ts",
+    "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules -r dotenv/config src/knex/utils/copyComments.ts",
     "server": "json-server --watch db.json"
   },
   "keywords": [],
