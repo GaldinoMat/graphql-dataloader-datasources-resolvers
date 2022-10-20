@@ -1,21 +1,23 @@
+import { IDataSources } from '../../../types/typings';
 import { isLoggedIn } from '../login/utils/authFunctions';
+import { IPost } from './types/typings';
 
 //#region Query resolvers
-const post = async (_: any, { id }: any, { dataSources }: any) => {
+const post = async (_: any, { id }: any, { dataSources }: IDataSources) => {
   const post = await dataSources.postApi.getPost(id);
   return post;
 };
 
-const posts = async (_: any, { inputFilters }: any, { dataSources, loggedUserId }: any) => {
+const posts = async (_: any, { inputFilters }: any, { dataSources, loggedUserId }: IPost) => {
   isLoggedIn(loggedUserId);
-
-  const posts = await dataSources.postApi.getPosts(inputFilters);
+  const { postApi } = dataSources;
+  const posts = await postApi.getPosts(inputFilters);
   return posts;
 };
 //#endregion
 
 //#region Mutation resolvers
-const createPost = async (_: any, { data }: any, { dataSources, loggedUserId }: any) => {
+const createPost = async (_: any, { data }: any, { dataSources, loggedUserId }: IPost) => {
   isLoggedIn(loggedUserId);
   data.userId = loggedUserId;
   const { postApi } = dataSources;
@@ -25,7 +27,7 @@ const createPost = async (_: any, { data }: any, { dataSources, loggedUserId }: 
 const updatePost = async (
   _: any,
   { postId, data }: any,
-  { dataSources, loggedUserId }: any,
+  { dataSources, loggedUserId }: IPost,
 ) => {
   isLoggedIn(loggedUserId);
   data.userId = loggedUserId;
@@ -33,7 +35,7 @@ const updatePost = async (
   return postApi.updatePost(postId, data);
 };
 
-const deletePost = async (_: any, { postId }: any, { dataSources, loggedUserId }: any) => {
+const deletePost = async (_: any, { postId }: any, { dataSources, loggedUserId }: IPost) => {
   isLoggedIn(loggedUserId);
   const { postApi } = dataSources;
   return postApi.deletePost(postId);
@@ -41,7 +43,7 @@ const deletePost = async (_: any, { postId }: any, { dataSources, loggedUserId }
 //#endregion
 
 //#region Field resolvers
-const user = async ({ userId }: any, _: any, { dataSources }: any) => {
+const user = async ({ userId }: any, _: any, { dataSources }: IPost) => {
   const { userApi } = dataSources;
   return userApi.batchLoadById(userId);
 };

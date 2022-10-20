@@ -178,7 +178,7 @@
       "indexRef": 22,
       "createdAt": "2022-10-18T01:44:54.787Z",
       "id": "_wpLOG7",
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJfd3BMT0c3IiwiaWF0IjoxNjY2MDU3NTM1LCJleHAiOjE2NjY2NjIzMzV9.6UG_gB_c-NqWtKOHRC1hT-e-gfr3M0FE-oHqhrX-Ilo"
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJfd3BMT0c3IiwiaWF0IjoxNjY2MjM0NzI2LCJleHAiOjE2NjY4Mzk1MjZ9.lwx2gFy2svUfLo2RuTTnP92UnW1HpMPYlu0TILaQdHg"
     }
   ],
   "posts": [
@@ -389,6 +389,14 @@
       "indexRef": 26,
       "createdAt": "2022-09-16T16:53:16.328Z",
       "id": "4okgVKe"
+    },
+    {
+      "title": "Hello",
+      "body": "Test thingy",
+      "userId": "_wpLOG7",
+      "indexRef": 27,
+      "createdAt": "2022-10-20T02:58:17.083Z",
+      "id": "Ov-T9m1"
     }
   ],
   "comments": [
