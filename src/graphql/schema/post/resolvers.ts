@@ -47,6 +47,10 @@ const user = async ({ userId }: any, _: any, { dataSources }: IPost) => {
   const { userApi } = dataSources;
   return userApi.batchLoadById(userId);
 };
+
+const comments = async ({id: post_Id}: any, _: any, {dataSources}: IPost) => {
+  return dataSources.commentDb.batchLoadByID(post_Id);
+}
 //#endregion
 
 export const postResolvers = {
@@ -61,5 +65,6 @@ export const postResolvers = {
   },
   Post: {
     user,
+    comments
   },
 };

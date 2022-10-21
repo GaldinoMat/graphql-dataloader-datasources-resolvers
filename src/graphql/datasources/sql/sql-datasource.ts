@@ -5,11 +5,11 @@ import { Knex } from 'knex';
 
 export class SQLDatasource extends DataSource {
   db: Knex;
-  _loader: any;
+  _loader: DataLoader<unknown, any, unknown>;
   context: any;
   cache: String | undefined;
 
-  constructor(dbConnection: any) {
+  constructor(dbConnection: Knex) {
     super()
     this.db = dbConnection;
     this._loader = new DataLoader(async (ids: any) => this.batchLoaderCallback(ids))
@@ -24,7 +24,7 @@ export class SQLDatasource extends DataSource {
     return this._loader.load(id);
   }
 
-  async batchLoaderCallback(_ids: String) {
+  async batchLoaderCallback(_ids: any) {
     return _ids;
   }
 }
